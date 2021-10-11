@@ -12,4 +12,7 @@ _Autonomous paperclip generator, converting all matter in the universe to paperc
 ## About
 Clippy is a bot designed to play the artificial intelligence game [Universal Paperclips](https://www.decisionproblem.com/paperclips/index2.html).
 
-It plays the game without using cheats, similar to how a human would after studying the game and learning how to play it. That being said, Clippy definitely clicks faster than you do!
+It plays the game without using cheats, similar to how a human would
+after studying the game and learning how to play it. That being said,
+Clippy definitely clicks faster than you do! It performs multiple
+actions on each execution of the browser's javascript event loop.
