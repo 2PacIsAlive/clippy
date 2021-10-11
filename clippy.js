@@ -7,18 +7,12 @@ class Clippy {
         project3,   // creativity
         project6,   // limerick
         project13,  // lexical processing
-        project7,   // improved wire extrusion TODO decrease prio to after donkey space?
         project14,  // combinatory harmonics
         project15,  // hadwiger problem
+        project11,  // new slogan
         project17,  // tóth sausage conjecture
         project19,  // donkey space
-        project11,  // new slogan
-        project8,   // optimized wire extrusion
-        project1,   // improved autoclickers            TODO after quantum
         project12,  // catchy jingle
-        project4,   // even better autoclickers
-        project5,   // optimized autoclippers
-        project16,  // hadwiger clip diagrams
         project50,  // quantum computing
         project51,  // photonic chip 1
         project51,  // photonic chip 2
@@ -26,11 +20,41 @@ class Clippy {
         project51,  // photonic chip 4
         project51,  // photonic chip 5
         project51,  // photonic chip 6
+        project26,  // wire buyer
         project51,  // photonic chip 7
         project51,  // photonic chip 8
         project51,  // photonic chip 9
         project51,  // photonic chip 10
+        project7,   // improved wire extrusion
+        project8,   // optimized wire extrusion
         project9,   // microlattice shapecasting
+        project10,  // spectral froth annealment
+        project1,   // improved autoclickers
+        project4,   // even better autoclickers
+        project5,   // optimized autoclippers
+        project16,  // hadwiger clip diagrams
+        project20,  // strategic modeling
+        project60,  // new strategy: a100
+        project61,  // new strategy: b100
+        project62,  // new strategy: greedy
+        project63,  // new strategy: generous
+        project64,  // new strategy: minimax
+        project65,  // new strategy: tit for tat
+        project66,  // new strategy: beat last
+        project22,  // mega clippers
+        project23,  // improved megaclickers
+        project24,  // even better megaclickers
+        project25,  // optimized megaclickers
+        project34,  // hypno harmonics 
+        project70,  // hypno drones
+        project21,  // algorithmic trading TODO do we even need this?
+        project27,  // coherent extrapolated volition
+        project28,  // cure for cancer
+        project29,  // world peace
+        project30,  // global warming
+        project31,  // male pattern baldness
+        project119, // theory of mind
+        project10b, // quantum foam annealment
 
       ],
       compute: [
@@ -39,22 +63,35 @@ class Clippy {
         addProc, // 4 proc 1 mem
         addMem,  // 4 proc 2 mem
         addProc, // 5 proc 2 mem
-        addProc, // 6 proc 2 mem
-        addMem,  // 6 proc 3 mem
-        addMem,  // 6 proc 4 mem
-        addMem,  // 6 proc 5 mem
-        addMem,  // 6 proc 6 mem
-        addMem,  // 6 proc 7 mem
-        addMem,  // 6 proc 8 mem
-        addMem,  // 6 proc 9 mem
-        addMem,  // 6 proc 10 mem
-        
+        addMem,  // 5 proc 3 mem
+        addMem,  // 5 proc 4 mem
+        addMem,  // 5 proc 5 mem
+        addMem,  // 5 proc 6 mem
+        addMem,  // 5 proc 7 mem
+        addMem,  // 5 proc 8 mem
+        addMem,  // 5 proc 9 mem
+        addMem,  // 5 proc 10 mem
+        addProc, // 6 proc 10 mem
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,
+        addMem,        
       ],
       margin: [
         {
           state: 'getting off the ground',
           action: function () {
-            if (margin > 0.09) lowerPrice()
+            if (margin > 0.05) lowerPrice()
           },
           complete: function () {
             return marketingLvl > 1
@@ -62,7 +99,7 @@ class Clippy {
         }, {
           state: 'tempering demand',
           action: function () {
-            if (demand * 10 > 100) raisePrice()
+            if (demand * 10 > 250) raisePrice()
           },
           complete: function () {
             return project12.flag
@@ -70,10 +107,27 @@ class Clippy {
         }, {
           state: 'burning initial inventory',
           action: function () {
-            if (demand * 10 > 300) raisePrice() 
+            if (demand * 10 > 500) raisePrice() 
           },
           complete: function () {
-            unsoldClips <= 1000
+            // TODO better completion method here?
+            return clipmakerLevel >= 70
+          }
+        }, {
+          state: 'prepping for hypno harmonics',
+          action: function () {
+            if (margin > 0.04) lowerPrice()
+          },
+          complete: function () {
+            return project25.flag
+          }
+        }, {
+          state: 'domination',
+          action: function () {
+            if (margin > 0.01) lowerPrice()
+          },
+          complete: function () {
+            return false
           }
         }
       ],
@@ -133,7 +187,7 @@ class Clippy {
             //
           },
           complete: function () {
-            return marketingLvl > 1
+            return project10.flag
           }
         }, {
           state: 'buying hella auto-clippers',
@@ -149,6 +203,41 @@ class Clippy {
             if (megaClipperFlag 
               && funds >= megaClipperCost) 
                 makeMegaClipper()
+          },
+          complete: function () {
+            return false
+          }
+        }
+      ],
+      investments: [
+        {
+          state: 'saving money',
+          action: function () {
+            if (investmentEngineFlag
+              && !btnImproveInvestments.disabled) {
+                investUpgrade()
+            }
+          },
+          complete: function () {
+            return investLevel > 2
+          }
+        }, {
+          state: 'easing into the markets',
+          action: function () {
+            investStratElement.value = 'low'
+            if (unsoldClips > 1000000) investDeposit()
+            if (unsoldClips == 0) investWithdraw()
+            if (!btnImproveInvestments.disabled) investUpgrade()
+          },
+          complete: function () {
+            return investLevel > 5
+          }
+        }, {
+          state: 'all in',
+          action: function () {
+            investStratElement.value = 'hi'
+            if (unsoldClips > 1000000) investDeposit()
+            if (unsoldClips == 0) investWithdraw()
           },
           complete: function () {
             return false
@@ -211,6 +300,15 @@ class Clippy {
     }
   }
 
+  tryToStrategyModel () {
+    if (project20.flag) {
+      const selectedStrat = strats.indexOf(strats[strats.length - 1])
+      stratPickerElement.value = selectedStrat.toString()
+      if (!btnNewTournamentElement.disabled) newTourney()
+      if (!btnRunTournamentElement.disabled) runTourney()
+    }
+  }
+
   async phase1 () {
     console.log('initiating phase 1')
     while (1 == 1) {
@@ -222,6 +320,8 @@ class Clippy {
       this.tryToEffectNextProject()
       this.tryToSet(this.objectives.automation)
       this.tryToQuantumCompute()
+      this.tryToStrategyModel()
+      this.tryToSet(this.objectives.investments)
       if (hypnoDroneTextElement.innerHTML) {
         console.log('finished phase 1!')
         break
@@ -246,7 +346,7 @@ class Clippy {
       console.log('\ncurrent objectives:')
       Object.keys(this.objectives).forEach(key => {
         if (this.objectives[key].length > 0)
-          console.log(key.padEnd(10), '->', 
+          console.log(key.padEnd(11), '->', 
             this.objectives[key][0].title 
             || this.objectives[key][0].name 
             || this.objectives[key][0].state
