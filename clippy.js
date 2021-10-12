@@ -1,9 +1,8 @@
 class Clippy {
   constructor () {
-    this.wirePrices = []
-    this.state = 'initializing'
     this.objectives = {
       project: [
+        // phase 1
         project3,   // creativity
         project6,   // limerick
         project13,  // lexical processing
@@ -45,9 +44,9 @@ class Clippy {
         project23,  // improved megaclickers
         project24,  // even better megaclickers
         project25,  // optimized megaclickers
-        project34,  // hypno harmonics 
+        project34,  // hypno harmonics
+        project21,  // algorithmic trading
         project70,  // hypno drones
-        project21,  // algorithmic trading TODO do we even need this?
         project27,  // coherent extrapolated volition
         project28,  // cure for cancer
         project29,  // world peace
@@ -55,6 +54,25 @@ class Clippy {
         project31,  // male pattern baldness
         project119, // theory of mind
         project10b, // quantum foam annealment
+        project37,  // hostile takeover
+        project38,  // full monopoly
+        project40,  // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project40b, // a token of goodwill
+        project35,  // release the hypno drones
+        // phase 2
+        project18,  // toth tubule enfolding
+        project127, // power grid
+        project41,  // nanoscale wire production
+        project43,  // harvester drones
+        project44,  // wire drones
+        project45,  // clip factories
 
       ],
       compute: [
@@ -124,7 +142,8 @@ class Clippy {
         }, {
           state: 'domination',
           action: function () {
-            if (margin > 0.01) lowerPrice()
+            if (demand * 10 < 10000
+              && margin > 0.02) lowerPrice()
           },
           complete: function () {
             return false
@@ -195,7 +214,7 @@ class Clippy {
             if (funds >= clipperCost) makeClipper()
           },
           complete: function () {
-            return clipmakerLevel == 75
+            return clipmakerLevel >= 75
           }
         }, {
           state: 'buying hella mega-clippers',
@@ -205,7 +224,7 @@ class Clippy {
                 makeMegaClipper()
           },
           complete: function () {
-            return false
+            return megaClipperLevel >= 75
           }
         }
       ],
@@ -240,15 +259,20 @@ class Clippy {
             if (unsoldClips == 0) investWithdraw()
           },
           complete: function () {
-            return false
+            return portTotal >= 100000000000
+          }
+        }, {
+          state: 'cash out',
+          action: function () {
+            investWithdraw()
+          },
+          complete: function () {
+            return funds > 100000000000
           }
         }
       ]
     }
-  }
-
-  async nextEventLoop () {
-    return new Promise(resolve => setTimeout(resolve, 0));
+    this.wirePrices = []
   }
   
   tryToMakeClip () {
@@ -309,40 +333,8 @@ class Clippy {
     }
   }
 
-  async phase1 () {
-    console.log('initiating phase 1')
-    while (1 == 1) {
-      this.tryToSet(this.objectives.margin)
-      this.tryToSet(this.objectives.marketing)
-      this.tryToSet(this.objectives.wire)
-      this.tryToMakeClip()
-      this.tryToMakeNextImprovement()
-      this.tryToEffectNextProject()
-      this.tryToSet(this.objectives.automation)
-      this.tryToQuantumCompute()
-      this.tryToStrategyModel()
-      this.tryToSet(this.objectives.investments)
-      if (hypnoDroneTextElement.innerHTML) {
-        console.log('finished phase 1!')
-        break
-      }
-      await this.nextEventLoop()
-    }
-  }
-
-  phase2 () {
-    console.log('initiating phase 2')
-    let inPhase2 = false
-    if (inPhase2) this.phase2()
-    else this.done()
-  }
-
-  done () {
-    console.log("done")
-  }
-
   launchStateLogger () {
-    setInterval(_ => {
+    return setInterval(_ => {
       console.log('\ncurrent objectives:')
       Object.keys(this.objectives).forEach(key => {
         if (this.objectives[key].length > 0)
@@ -353,11 +345,11 @@ class Clippy {
           )
         }
       )
-    }, 10000)
+    }, 30000)
   }
 
   launchWirePriceSampler () {
-    setInterval(_ => {
+    return setInterval(_ => {
       if (this.wirePrices.length === 10) this.wirePrices.shift()
       this.wirePrices.push(wireCost)
       this.averageWirePrice = 
@@ -365,19 +357,64 @@ class Clippy {
     }, 5000)
   }
 
-  async launchStateMachine () {
-    await this.phase1()
-    this.done()
+  phase1 () {
+    return {
+      objectives: () => {
+        this.tryToQuantumCompute()
+        this.tryToSet(this.objectives.margin)
+        this.tryToSet(this.objectives.marketing)
+        this.tryToSet(this.objectives.wire)
+        this.tryToMakeClip()
+        this.tryToMakeNextImprovement()
+        this.tryToEffectNextProject()
+        this.tryToSet(this.objectives.automation)
+        this.tryToStrategyModel()
+        this.tryToSet(this.objectives.investments)
+      },
+      complete: function () {
+        return project35.flag
+      }
+    }
+  }
+
+  phase2 () {
+    return {
+      objectives: () => {
+        this.tryToQuantumCompute()
+      },
+      complete: function () {
+        return project46.flag
+      }
+    }
+  }
+
+  async stateMachine () {
+    await this.playGame(this.phase1())
+    await this.playGame(this.phase2())
+  }
+
+  async nextEventLoop () {
+    return new Promise(resolve => setTimeout(resolve, 0));
+  }
+
+  async playGame (stage) {
+    while (1 == 1) {
+      stage.objectives()
+      await this.nextEventLoop()
+      if (stage.complete()) break
+    }
   }
 
   async exec () {
-    this.launchStateLogger()
-    this.launchWirePriceSampler()
-    await this.launchStateMachine()
+    const stateLogger = this.launchStateLogger(),
+      wirePriceSampler = this.launchWirePriceSampler()
+    await this.stateMachine()
+    clearInterval(stateLogger)
+    clearInterval(wirePriceSampler)
   }
 }
 
 const clippy = new Clippy()
 clippy.exec()
-  .then(_ => console.log('yay'))
+  .then(_ => console.log('nice clippin w u'))
   .catch(err => console.error(err))
