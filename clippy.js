@@ -17,35 +17,35 @@ class Clippy {
         project51,  // photonic chip 2
         project51,  // photonic chip 3        
         project51,  // photonic chip 4
-        project51,  // photonic chip 5
-        project51,  // photonic chip 6
-        project26,  // wire buyer
-        project51,  // photonic chip 7
-        project51,  // photonic chip 8
-        project51,  // photonic chip 9
-        project51,  // photonic chip 10
         project7,   // improved wire extrusion
         project8,   // optimized wire extrusion
         project9,   // microlattice shapecasting
         project10,  // spectral froth annealment
+        project51,  // photonic chip 5
+        project51,  // photonic chip 6
+        project26,  // wire buyer
+        project51,  // photonic chip 7
         project1,   // improved autoclickers
         project4,   // even better autoclickers
         project5,   // optimized autoclippers
         project16,  // hadwiger clip diagrams
+        project51,  // photonic chip 8
+        project51,  // photonic chip 9
+        project51,  // photonic chip 10
         project20,  // strategic modeling
         project60,  // new strategy: a100
         project61,  // new strategy: b100
         project62,  // new strategy: greedy
+        project21,  // algorithmic trading
         project63,  // new strategy: generous
         project64,  // new strategy: minimax
         project65,  // new strategy: tit for tat
         project66,  // new strategy: beat last
         project22,  // mega clippers
-        project23,  // improved megaclickers
-        project24,  // even better megaclickers
-        project25,  // optimized megaclickers
+        project23,  // improved megaclippers
+        project24,  // even better megaclippers
+        project25,  // optimized megaclippers
         project34,  // hypno harmonics
-        project21,  // algorithmic trading
         project70,  // hypno drones
         project27,  // coherent extrapolated volition
         project28,  // cure for cancer
@@ -56,15 +56,21 @@ class Clippy {
         project10b, // quantum foam annealment
         project37,  // hostile takeover
         project38,  // full monopoly
-        project40,  // a token of goodwill
+        project40,  // a token of goodwill 500,000
+        project40b, // a token of goodwill 1,000,000
+        project40b, // a token of goodwill 
         project40b, // a token of goodwill
         project40b, // a token of goodwill
         project40b, // a token of goodwill
         project40b, // a token of goodwill
         project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
+        project40b, // a token of goodwill 
+        project40b, // a token of goodwill 256,000,000
+        project40b, // a token of goodwill 512,000,000 
+        // will only have 101,000,000 clips for phase 2 if we use this
+        // last token of goodwill, it will be faster but more complicated
+        // since we would have to buy a harvester drone, dismantle it,
+        // and then buy a wire drone
         project35,  // release the hypno drones
         // phase 2
         project18,  // toth tubule enfolding
@@ -108,43 +114,32 @@ class Clippy {
       margin: [
         {
           state: 'getting off the ground',
-          action: function () {
-            if (margin > 0.05) lowerPrice()
-          },
+          action: () => this.setPrice(0.02, 0.04),
           complete: function () {
             return marketingLvl > 1
           }
         }, {
           state: 'tempering demand',
-          action: function () {
-            if (demand * 10 > 250) raisePrice()
-          },
+          action: () => this.setPrice(0.03, 0.06),
           complete: function () {
             return project12.flag
           }
         }, {
           state: 'burning initial inventory',
-          action: function () {
-            if (demand * 10 > 500) raisePrice() 
-          },
+          action: () => this.setPrice(0.08, 0.12),
           complete: function () {
             // TODO better completion method here?
             return clipmakerLevel >= 70
           }
         }, {
           state: 'prepping for hypno harmonics',
-          action: function () {
-            if (margin > 0.04) lowerPrice()
-          },
+          action: () => this.setPrice(0.09, 0.14),
           complete: function () {
             return project25.flag
           }
         }, {
           state: 'domination',
-          action: function () {
-            if (demand * 10 < 10000
-              && margin > 0.02) lowerPrice()
-          },
+          action: () => this.setPrice(0.12, 0.34),
           complete: function () {
             return false
           }
@@ -166,6 +161,14 @@ class Clippy {
           },
           complete: function () {
             return marketingLvl > 2
+          }
+        }, {
+          state: 'campaigning tough',
+          action: function () {
+            if (funds >= adCost * 2) buyAds()
+          },
+          complete: function () {
+            return marketingLvl > 5
           }
         }
       ],
@@ -189,7 +192,7 @@ class Clippy {
           action: () => {
             if (funds >= wireCost) {
               if (wireCost <= this.averageWirePrice
-                && wire < 1000) {
+                && wire < 3000) {
                   buyWire()
               }
             }
@@ -211,20 +214,20 @@ class Clippy {
         }, {
           state: 'buying hella auto-clippers',
           action: function () {
-            if (funds >= clipperCost) makeClipper()
+            if (funds >= clipperCost * 2) makeClipper()
           },
           complete: function () {
             return clipmakerLevel >= 75
           }
         }, {
           state: 'buying hella mega-clippers',
-          action :function () {
+          action: function () {
             if (megaClipperFlag 
-              && funds >= megaClipperCost) 
+              && funds >= megaClipperCost * 2) 
                 makeMegaClipper()
           },
           complete: function () {
-            return megaClipperLevel >= 75
+            return megaClipperLevel >= 150
           }
         }
       ],
@@ -238,28 +241,30 @@ class Clippy {
             }
           },
           complete: function () {
-            return investLevel > 2
+            return investLevel > 4
           }
         }, {
           state: 'easing into the markets',
           action: function () {
             investStratElement.value = 'low'
-            if (unsoldClips > 1000000) investDeposit()
+            if (unsoldClips > 1000000 
+              && bankroll < 1000) investDeposit()
             if (unsoldClips == 0) investWithdraw()
             if (!btnImproveInvestments.disabled) investUpgrade()
           },
           complete: function () {
-            return investLevel > 5
+            return investLevel > 8
           }
         }, {
           state: 'all in',
           action: function () {
             investStratElement.value = 'hi'
-            if (unsoldClips > 1000000) investDeposit()
+            if (unsoldClips > 1000000 &&
+              portTotal < 3000000) investDeposit()
             if (unsoldClips == 0) investWithdraw()
           },
           complete: function () {
-            return portTotal >= 100000000000
+            return portTotal >= 1500000000
           }
         }, {
           state: 'cash out',
@@ -273,8 +278,21 @@ class Clippy {
       ]
     }
     this.wirePrices = []
+    this.inventorySamples = []
+    this.inventoryState = 'stable'
   }
-  
+
+  setPrice (low, high) {
+    switch(this.inventoryState) {
+      case 'increasing':
+        if (margin > low) lowerPrice()
+        break
+      case 'decreasing':
+        if (margin < high) raisePrice()
+        break
+    }
+  }
+
   tryToMakeClip () {
     if (wire > 0) {
       clipClick(1)
@@ -357,6 +375,21 @@ class Clippy {
     }, 5000)
   }
 
+  launchInventoryMonitor () {
+    return setInterval(_ => {
+      this.inventorySamples.push(unsoldClips)
+      if (this.inventorySamples.length === 3) {
+        this.inventorySamples.shift()
+        if (this.inventorySamples[0] > this.inventorySamples[1])
+          this.inventoryState = 'decreasing'
+        else if (this.inventorySamples[0] < this.inventorySamples[1])
+          this.inventoryState = 'increasing'
+        else this.inventoryState = 'stable'
+      }
+
+    }, 500)
+  }
+
   phase1 () {
     return {
       objectives: () => {
@@ -381,6 +414,7 @@ class Clippy {
     return {
       objectives: () => {
         this.tryToQuantumCompute()
+        this.tryToEffectNextProject()
       },
       complete: function () {
         return project46.flag
@@ -406,11 +440,13 @@ class Clippy {
   }
 
   async exec () {
-    const stateLogger = this.launchStateLogger(),
-      wirePriceSampler = this.launchWirePriceSampler()
+    const intervals = {
+      stateLogger: this.launchStateLogger(),
+      wirePriceSampler: this.launchWirePriceSampler(),
+      inventoryMonitor: this.launchInventoryMonitor()
+    }
     await this.stateMachine()
-    clearInterval(stateLogger)
-    clearInterval(wirePriceSampler)
+    intervals.forEach(clearInterval)
   }
 }
 
