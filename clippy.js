@@ -1,5 +1,7 @@
 class Clippy {
   constructor () {
+    this.startTime = performance.now()
+    this.diagnostics = {}
     this.objectives = {
       project: [
         // phase 1
@@ -10,25 +12,25 @@ class Clippy {
         project15,  // hadwiger problem
         project11,  // new slogan
         project17,  // tóth sausage conjecture
-        project19,  // donkey space
-        project12,  // catchy jingle
         project50,  // quantum computing
         project51,  // photonic chip 1
         project51,  // photonic chip 2
         project51,  // photonic chip 3        
         project51,  // photonic chip 4
+        project12,  // catchy jingle
         project7,   // improved wire extrusion
         project8,   // optimized wire extrusion
         project9,   // microlattice shapecasting
         project10,  // spectral froth annealment
-        project51,  // photonic chip 5
-        project51,  // photonic chip 6
         project26,  // wire buyer
-        project51,  // photonic chip 7
+        project51,  // photonic chip 5
         project1,   // improved autoclickers
         project4,   // even better autoclickers
         project5,   // optimized autoclippers
         project16,  // hadwiger clip diagrams
+        project19,  // donkey space
+        project51,  // photonic chip 6
+        project51,  // photonic chip 7
         project51,  // photonic chip 8
         project51,  // photonic chip 9
         project51,  // photonic chip 10
@@ -120,26 +122,32 @@ class Clippy {
           }
         }, {
           state: 'tempering demand',
-          action: () => this.setPrice(0.03, 0.06),
+          action: () => this.setPrice(0.03, 0.07),
           complete: function () {
             return project12.flag
           }
         }, {
           state: 'burning initial inventory',
-          action: () => this.setPrice(0.08, 0.12),
+          action: () => this.setPrice(0.06, 0.12),
           complete: function () {
             // TODO better completion method here?
             return clipmakerLevel >= 70
           }
         }, {
           state: 'prepping for hypno harmonics',
-          action: () => this.setPrice(0.09, 0.14),
+          action: () => this.setPrice(0.04, 0.14),
           complete: function () {
             return project25.flag
           }
         }, {
-          state: 'domination',
-          action: () => this.setPrice(0.12, 0.34),
+          state: 'local domination',
+          action: () => this.setPrice(0.02, 0.12),
+          complete: function () {
+            return project31.flag
+          }
+        }, {
+          state: 'global domination',
+          action: () => this.setPrice(0.01, 0.10),
           complete: function () {
             return false
           }
@@ -247,24 +255,22 @@ class Clippy {
           state: 'easing into the markets',
           action: function () {
             investStratElement.value = 'low'
-            if (unsoldClips > 1000000 
-              && bankroll < 1000) investDeposit()
+            if (bankroll < 1000 && funds >= 1000) investDeposit()
             if (unsoldClips == 0) investWithdraw()
             if (!btnImproveInvestments.disabled) investUpgrade()
           },
           complete: function () {
-            return investLevel > 8
+            return investLevel > 9
           }
         }, {
           state: 'all in',
           action: function () {
             investStratElement.value = 'hi'
-            if (unsoldClips > 1000000 &&
-              portTotal < 3000000) investDeposit()
+            if (bankroll < 10000 && funds >= 1000) investDeposit()
             if (unsoldClips == 0) investWithdraw()
           },
           complete: function () {
-            return portTotal >= 1500000000
+            return portTotal >= 1400000000
           }
         }, {
           state: 'cash out',
@@ -272,7 +278,7 @@ class Clippy {
             investWithdraw()
           },
           complete: function () {
-            return funds > 100000000000
+            return portTotal == 0
           }
         }
       ]
@@ -387,7 +393,14 @@ class Clippy {
         else this.inventoryState = 'stable'
       }
 
-    }, 500)
+    }, 250)
+  }
+
+  captureDiagnostics () {
+    if (!this.diagnostics.phase1Duration
+      && project35.flag) 
+      this.diagnostics.phase1Duration = 
+        (performance.now() - this.startTime) / 1000 / 60
   }
 
   phase1 () {
@@ -434,6 +447,7 @@ class Clippy {
   async playGame (stage) {
     while (1 == 1) {
       stage.objectives()
+      this.captureDiagnostics()
       await this.nextEventLoop()
       if (stage.complete()) break
     }
