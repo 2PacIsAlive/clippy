@@ -70,9 +70,6 @@ class Clippy {
         project40b, // a token of goodwill 256,000,000
         project40b, // a token of goodwill 512,000,000 
         // will only have 101,000,000 clips for phase 2 if we use this
-        // last token of goodwill, it will be faster but more complicated
-        // since we would have to buy a harvester drone, dismantle it,
-        // and then buy a wire drone
         project35,  // release the hypno drones
         // phase 2
         project18,  // toth tubule enfolding
@@ -81,7 +78,16 @@ class Clippy {
         project43,  // harvester drones
         project44,  // wire drones
         project45,  // clip factories
-
+        project125, // momentum
+        project126, // swarm computing
+        project110, // drone flocking: collision avoidance
+        project100, // upgraded factories
+        project101, // hyperspeed factories
+        project111, // drone flocking: alignment
+        project102, // self-correcting supply chain
+        project112, // drone flocking: adversarial cohesion
+        project46,  // space exploration
+        // phase 3
       ],
       compute: [
         addProc, // 2 proc 1 mem
@@ -281,11 +287,139 @@ class Clippy {
             return portTotal == 0
           }
         }
+      ],
+      drones: [
+        {
+          state: 'initialization: phase 1',
+          action: function () {
+            if (batteryLevel == 0) makeBattery(1)
+            if (farmLevel == 0) makeFarm(1)
+            if (harvesterLevel == 0) makeHarvester(1)
+            if (wireDroneLevel == 0) makeWireDrone(1)
+          },
+          complete: function () {
+            return storedPower >= 200
+          }
+        }, {
+          state: 'initialization: phase 2',
+          action: function () {
+            if (factoryLevel == 0) makeFactory()
+            if (harvesterLevel != 0) harvesterReboot()
+            if (wireDroneLevel != 0) wireDroneReboot()
+            if (farmLevel != 0) farmReboot()
+          },
+          complete: function () {
+            return clips >= 1000000000     
+          }
+        }, {
+          state: 'consume and grow',
+          action: () => {
+            if (farmLevel == 0) makeFarm(1)
+            if (harvesterLevel == 0) makeHarvester(1)
+            else if (wireDroneLevel == 0) makeWireDrone(1)
+            else {
+              const consumptionRate = parseInt(powerConsumptionRateElement.innerHTML.replace(/,/g, '')),
+                productionRate = parseInt(powerProductionRateElement.innerHTML.replace(/,/g, ''))
+              if (this.needFactory()) {
+                if (factoryLevel >= 66 && !project102.flag) { /* save for self-correcting supply chain */ }
+                else {
+                  if (consumptionRate + 200
+                    >= productionRate) {
+                      makeFarm(1)
+                  } else {
+                    makeFactory()
+                  }
+                }
+              } else {
+                let dronesNeeded = 1
+                if (maxDroneLevel > 2500) dronesNeeded = 10
+                if (maxDroneLevel > 7500) dronesNeeded = 100
+                if (maxDroneLevel > 55000) dronesNeeded = 1000
+                if (consumptionRate + dronesNeeded 
+                  >= productionRate) {
+                    makeFarm(1)
+                } else {
+                  const desiredDroneRatio = 1.618
+                  if (Math.abs(desiredDroneRatio - this.getDroneRatio(harvesterLevel + 1, wireDroneLevel))
+                    < Math.abs(desiredDroneRatio - this.getDroneRatio(harvesterLevel, wireDroneLevel + 1))
+                    && availableMatter != 0) {
+                      makeHarvester(dronesNeeded)
+                  } else {
+                    makeWireDrone(dronesNeeded)
+                  }
+                }
+              }
+
+            }
+          },
+          complete: function () {
+            return availableMatter == 0 
+              && acquiredMatter == 0 
+              && nanoWireElement.innerHTML == 0
+          }
+        }, {
+          state: 'dismantle and depart',
+          action: function () {
+            if (harvesterLevel != 0) harvesterReboot()
+            if (wireDroneLevel != 0) wireDroneReboot()
+            if (factoryLevel != 0) factoryReboot()
+            if (parseInt(maxStorageElement.innerHTML.replace(/,/g, '')) < 10000000)
+              makeBattery(1)
+            else makeFarm(1)
+          },
+          complete: function () {
+            return project46.flag // space exploration
+          }
+        }
+      ],
+      probes: [
+        {
+          state: 'entrusting probe designers',
+          action: function () {
+            document.getElementById('slider').value = 200
+            increaseProbeTrust()
+          },
+          complete: function () {
+            return probeTrust == 20
+          }
+        }, {
+          state: 'replicating',
+          action: function () {
+            if (probeRep < 14) raiseProbeRep()
+            if (probeHaz < 6) raiseProbeHaz()
+          },
+          complete: function () {
+            return probeRep == 14 && probeHaz == 6
+          }
+        }, {
+          state: 'launching replicators',
+          action: function () {
+            makeProbe()
+          },
+          complete: function () {
+            return false
+          }
+        }
       ]
     }
     this.wirePrices = []
     this.inventorySamples = []
     this.inventoryState = 'stable'
+  }
+
+  needFactory () {
+    if (factoryLevel >= 75 && !project102.flag) return false
+    if (project102.flag && !project112.flag) return false
+    const [prodSpeed, prodSpeedUnits] = wppsElement.innerHTML.split(' '),
+      [manuSpeed, manuSpeedUnits] = clipmakerRate2Element.innerHTML.split(' ')
+    return prodSpeedUnits == manuSpeedUnits
+      ? prodSpeed > manuSpeed
+      : placeValue.indexOf(` ${prodSpeedUnits} `)
+        > placeValue.indexOf(` ${manuSpeedUnits} `)
+  }
+
+  getDroneRatio (wireDrones, harvesterDrones) {
+    return wireDrones / harvesterDrones;
   }
 
   setPrice (low, high) {
@@ -328,7 +462,7 @@ class Clippy {
   }
 
   tryToMakeNextImprovement () {
-    if (trust > processors + memory) {
+    if (trust > processors + memory || swarmGifts > 0) {
       if (this.objectives.compute.length > 0) {
         this.objectives.compute.shift()()
       } else { // TODO prioritize all improvements?
@@ -401,6 +535,10 @@ class Clippy {
       && project35.flag) 
       this.diagnostics.phase1Duration = 
         (performance.now() - this.startTime) / 1000 / 60
+    if (!this.diagnostics.phase2Duration
+      && project46.flag) 
+      this.diagnostics.phase2Duration = 
+        (performance.now() - this.startTime) / 1000 / 60
   }
 
   phase1 () {
@@ -428,9 +566,23 @@ class Clippy {
       objectives: () => {
         this.tryToQuantumCompute()
         this.tryToEffectNextProject()
+        this.tryToSet(this.objectives.drones)
       },
       complete: function () {
-        return project46.flag
+        return project46.flag // space exploration
+      }
+    }
+  }
+
+  phase3 () {
+    return {
+      objectives: () => {
+        this.tryToQuantumCompute()
+        this.tryToMakeNextImprovement()
+        this.tryToSet(this.objectives.probes)
+      },
+      complete: function () {
+        return project146.flag // so we offer you exile
       }
     }
   }
@@ -438,6 +590,7 @@ class Clippy {
   async stateMachine () {
     await this.playGame(this.phase1())
     await this.playGame(this.phase2())
+    await this.playGame(this.phase3())
   }
 
   async nextEventLoop () {
@@ -460,7 +613,7 @@ class Clippy {
       inventoryMonitor: this.launchInventoryMonitor()
     }
     await this.stateMachine()
-    intervals.forEach(clearInterval)
+    Object.values(intervals).forEach(clearInterval)
   }
 }
 
