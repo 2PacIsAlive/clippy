@@ -18,26 +18,26 @@ class Clippy {
         project17,  // tóth sausage conjecture
         project50,  // quantum computing
         project51,  // photonic chip 1
-        // project51,  // photonic chip 2
-        // project51,  // photonic chip 3        
-        // project51,  // photonic chip 4
+        project51,  // photonic chip 2
+        project51,  // photonic chip 3        
+        project51,  // photonic chip 4
         project12,  // catchy jingle
         project7,   // improved wire extrusion
         project8,   // optimized wire extrusion
         project9,   // microlattice shapecasting
         project10,  // spectral froth annealment
         project26,  // wire buyer
-        // project51,  // photonic chip 5
+        project51,  // photonic chip 5
         project1,   // improved autoclickers
         project4,   // even better autoclickers
         project5,   // optimized autoclippers
         project16,  // hadwiger clip diagrams
         project19,  // donkey space
-        // project51,  // photonic chip 6
-        // project51,  // photonic chip 7
-        // project51,  // photonic chip 8
-        // project51,  // photonic chip 9
-        // project51,  // photonic chip 10
+        project51,  // photonic chip 6
+        project51,  // photonic chip 7
+        project51,  // photonic chip 8
+        project51,  // photonic chip 9
+        project51,  // photonic chip 10
         project20,  // strategic modeling
         project60,  // new strategy: a100
         project61,  // new strategy: b100
@@ -558,7 +558,7 @@ class Clippy {
             makeProbe()
           },
           complete: function () {
-            return probeCount >= 1000000000000000000000000000000 // 1 nonillion
+            return probeCount >= 1000000000000000000000000000 // 1 octillion
           }
         }, {
           state: 'launching explorers',
