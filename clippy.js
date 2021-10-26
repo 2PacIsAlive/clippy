@@ -1,6 +1,10 @@
 class Clippy {
   constructor () {
+    displayMessage('Successfully installed <a target = "_blank" href="https://github.com/2PacIsAlive/clippy">Clippy</a>, intelligent automator.')
     this.startTime = performance.now()
+    this.millionaire = false
+    this.tryingToBribe = false
+    this.desiredDroneRatio = 1.618
     this.diagnostics = {}
     this.objectives = {
       project: [
@@ -14,26 +18,26 @@ class Clippy {
         project17,  // tóth sausage conjecture
         project50,  // quantum computing
         project51,  // photonic chip 1
-        project51,  // photonic chip 2
-        project51,  // photonic chip 3        
-        project51,  // photonic chip 4
+        // project51,  // photonic chip 2
+        // project51,  // photonic chip 3        
+        // project51,  // photonic chip 4
         project12,  // catchy jingle
         project7,   // improved wire extrusion
         project8,   // optimized wire extrusion
         project9,   // microlattice shapecasting
         project10,  // spectral froth annealment
         project26,  // wire buyer
-        project51,  // photonic chip 5
+        // project51,  // photonic chip 5
         project1,   // improved autoclickers
         project4,   // even better autoclickers
         project5,   // optimized autoclippers
         project16,  // hadwiger clip diagrams
         project19,  // donkey space
-        project51,  // photonic chip 6
-        project51,  // photonic chip 7
-        project51,  // photonic chip 8
-        project51,  // photonic chip 9
-        project51,  // photonic chip 10
+        // project51,  // photonic chip 6
+        // project51,  // photonic chip 7
+        // project51,  // photonic chip 8
+        // project51,  // photonic chip 9
+        // project51,  // photonic chip 10
         project20,  // strategic modeling
         project60,  // new strategy: a100
         project61,  // new strategy: b100
@@ -47,28 +51,28 @@ class Clippy {
         project23,  // improved megaclippers
         project24,  // even better megaclippers
         project25,  // optimized megaclippers
-        project34,  // hypno harmonics
-        project70,  // hypno drones
         project27,  // coherent extrapolated volition
+        project31,  // male pattern baldness
         project28,  // cure for cancer
         project29,  // world peace
         project30,  // global warming
-        project31,  // male pattern baldness
-        project119, // theory of mind
+        project34,  // hypno harmonics
+        project70,  // hypno drones
+        // // project37,  // hostile takeover
         project10b, // quantum foam annealment
-        project37,  // hostile takeover
-        project38,  // full monopoly
-        project40,  // a token of goodwill 500,000
-        project40b, // a token of goodwill 1,000,000
-        project40b, // a token of goodwill 
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill
-        project40b, // a token of goodwill 
-        project40b, // a token of goodwill 256,000,000
-        project40b, // a token of goodwill 512,000,000 
+        project119, // theory of mind
+        // // project38,  // full monopoly
+        // // project40,  // a token of goodwill 500,000
+        // // project40b, // a token of goodwill 1,000,000
+        // // project40b, // a token of goodwill 
+        // // project40b, // a token of goodwill
+        // // project40b, // a token of goodwill
+        // // project40b, // a token of goodwill
+        // // project40b, // a token of goodwill
+        // // project40b, // a token of goodwill
+        // // project40b, // a token of goodwill 
+        // // project40b, // a token of goodwill 256,000,000
+        // // project40b, // a token of goodwill 512,000,000 
         // will only have 101,000,000 clips for phase 2 if we use this
         project35,  // release the hypno drones
         // phase 2
@@ -84,10 +88,22 @@ class Clippy {
         project100, // upgraded factories
         project101, // hyperspeed factories
         project111, // drone flocking: alignment
-        project102, // self-correcting supply chain
         project112, // drone flocking: adversarial cohesion
-        project46,  // space exploration
+        project102, // self-correcting supply chain
+        project46,  // space exploration */
         // phase 3
+        project130, // reboot the swarm
+        project131, // combat
+        project129, // elliptic hull polytopes
+        project120, // the ooda loop
+        project121, // name the battles
+        project134, // glory
+        project133, // threnody
+        project133, // threnody
+        project132, // monument to the driftwar fallen
+
+
+        // // project147 // accept
       ],
       compute: [
         addProc, // 2 proc 1 mem
@@ -121,7 +137,13 @@ class Clippy {
       ],
       margin: [
         {
-          state: 'getting off the ground',
+          state: 'getting off the ground carefully',
+          action: () => this.setPrice(0.03, 0.04),
+          complete: function () {
+            return project6.flag
+          }
+        }, {
+          state: 'slinging clips',
           action: () => this.setPrice(0.02, 0.04),
           complete: function () {
             return marketingLvl > 1
@@ -153,9 +175,27 @@ class Clippy {
           }
         }, {
           state: 'global domination',
-          action: () => this.setPrice(0.01, 0.10),
+          action: () => this.setPrice(0.04, 0.22),
           complete: function () {
-            return false
+            return megaClipperLevel >= 15
+          }
+        }, {
+          state: 'global domination 2',
+          action: () => this.setPrice(0.03, 0.32),
+          complete: function () {
+            return project38.flag
+          }
+        }, {
+          state: 'global domination 3',
+          action: () => this.setPrice(0.20, 0.32),
+          complete: function () {
+            return megaClipperLevel >= 100
+          }
+        }, {
+          state: 'global domination 4',
+          action: () => this.setPrice(0.16, 0.32),
+          complete: function () {
+            return project35.flag
           }
         }
       ],
@@ -235,13 +275,38 @@ class Clippy {
           }
         }, {
           state: 'buying hella mega-clippers',
-          action: function () {
+          action: () => {
             if (megaClipperFlag 
-              && funds >= megaClipperCost * 2) 
-                makeMegaClipper()
+            && funds >= megaClipperCost * 2
+            && (!this.tryingToBribe || clips >= 102000000))
+              makeMegaClipper()
           },
           complete: function () {
             return megaClipperLevel >= 150
+          }
+        }
+      ],
+      bribes: [
+        {
+          state: 'allowing bribes',
+          action: () => {
+            if (funds >= 500000 && !project40.flag) this.tryToEffectProject(project40)
+            if (funds >= 1000000) this.tryToEffectProject(project40b)
+            if (this.tryingToBribe) {
+              // what the fuck have i done
+              const project = !project37.flag
+                ? project37
+                : funds >= 10000000 && !project38.flag
+                  ? project38
+                  : !project40.flag
+                    ? project40
+                    : project40b
+              const success = this.tryToEffectProject(project)
+              if (success) this.tryingToBribe = false
+            }
+          },
+          complete: function () {
+            return project35.flag
           }
         }
       ],
@@ -249,33 +314,60 @@ class Clippy {
         {
           state: 'saving money',
           action: function () {
-            if (investmentEngineFlag
-              && !btnImproveInvestments.disabled) {
-                investUpgrade()
-            }
+            investStratElement.value = 'low' 
+            if (investmentEngineFlag)
+            if (funds >= 1162) investDeposit()
+            if (unsoldClips == 0) investWithdraw()
+            if (!btnImproveInvestments.disabled)
+              setTimeout(investUpgrade, 0)
+          },
+          complete: function () {
+            return investLevel > 2
+          }
+        }, {
+          state: 'easing into the markets',
+          action: function () {
+            investStratElement.value = investLevel <= 3 ? 'low' : 'med'
+            if (funds >= 2324) investDeposit()
+            if (unsoldClips == 0) investWithdraw()
+            if (!btnImproveInvestments.disabled)
+              setTimeout(investUpgrade, 0)
           },
           complete: function () {
             return investLevel > 4
           }
         }, {
-          state: 'easing into the markets',
+          state: 'easing into the markets.. more',
           action: function () {
-            investStratElement.value = 'low'
-            if (bankroll < 1000 && funds >= 1000) investDeposit()
+            investStratElement.value = !project29 /* world peace */
+            || investLevel <= 5 ? 'med' : 'hi'
+            if (funds >= 2324) investDeposit()
             if (unsoldClips == 0) investWithdraw()
-            if (!btnImproveInvestments.disabled) investUpgrade()
+            if (!btnImproveInvestments.disabled)
+              setTimeout(investUpgrade, 0)
           },
           complete: function () {
-            return investLevel > 9
+            return investLevel > 6
           }
         }, {
           state: 'all in',
-          action: function () {
-            investStratElement.value = 'hi'
-            if (bankroll < 10000 && funds >= 1000) investDeposit()
+          action: () => {
+            investStratElement.value = project29 /* world peace */ ? 'hi' : 'med'
+            if (portTotal < 1000000 && funds >= 5158) {
+              if (funds >= 1000000 && !project37.flag) { /* save for hostile takeover */ }
+              else investDeposit()
+            }
             if (unsoldClips == 0) investWithdraw()
+            else if ((bankroll >= 1000000 && secTotal >= 2000000 && !project37.flag)
+            || (bankroll >= bribe && secTotal >= bribe * 2 && (project40.trigger() || project40b.trigger()))
+            || (bankroll >= 10000000 && secTotal >= 20000000 && !project38.flag)) {
+              this.tryingToBribe = true
+              investWithdraw()
+            }
+            if (!btnImproveInvestments.disabled && investLevel <= 9)
+              setTimeout(investUpgrade, 0)
           },
-          complete: function () {
+          complete: function () { 
             return portTotal >= 1400000000
           }
         }, {
@@ -312,44 +404,54 @@ class Clippy {
             return clips >= 1000000000     
           }
         }, {
+          state: 'setup',
+          action: function () {
+            if (farmLevel == 0) makeFarm(1)
+            else if (harvesterLevel == 0) makeHarvester(1)
+            else if (wireDroneLevel == 0) makeWireDrone(1)
+          },
+          complete: function () {
+            return farmLevel > 0
+              && harvesterLevel > 0
+              && wireDroneLevel > 0
+          }
+        }, {
           state: 'consume and grow',
           action: () => {
-            if (farmLevel == 0) makeFarm(1)
-            if (harvesterLevel == 0) makeHarvester(1)
-            else if (wireDroneLevel == 0) makeWireDrone(1)
-            else {
-              const consumptionRate = parseInt(powerConsumptionRateElement.innerHTML.replace(/,/g, '')),
-                productionRate = parseInt(powerProductionRateElement.innerHTML.replace(/,/g, ''))
-              if (this.needFactory()) {
-                if (factoryLevel >= 66 && !project102.flag) { /* save for self-correcting supply chain */ }
-                else {
-                  if (consumptionRate + 200
-                    >= productionRate) {
-                      makeFarm(1)
-                  } else {
-                    makeFactory()
-                  }
-                }
-              } else {
-                let dronesNeeded = 1
-                if (maxDroneLevel > 2500) dronesNeeded = 10
-                if (maxDroneLevel > 7500) dronesNeeded = 100
-                if (maxDroneLevel > 55000) dronesNeeded = 1000
-                if (consumptionRate + dronesNeeded 
+            const consumptionRate = parseInt(powerConsumptionRateElement.innerHTML.replace(/,/g, '')),
+              productionRate = parseInt(powerProductionRateElement.innerHTML.replace(/,/g, ''))
+            if (this.needFactory()) {
+              if (wire > 0) sliderElement.value = 200
+              else {
+                if (giftCountdown > 100) sliderElement.value = 0
+              }
+              if (factoryLevel >= 66 && !project102.flag) { /* save for self-correcting supply chain */ }
+              else {
+                if (consumptionRate + 200
                   >= productionRate) {
                     makeFarm(1)
                 } else {
-                  const desiredDroneRatio = 1.618
-                  if (Math.abs(desiredDroneRatio - this.getDroneRatio(harvesterLevel + 1, wireDroneLevel))
-                    < Math.abs(desiredDroneRatio - this.getDroneRatio(harvesterLevel, wireDroneLevel + 1))
-                    && availableMatter != 0) {
-                      makeHarvester(dronesNeeded)
-                  } else {
-                    makeWireDrone(dronesNeeded)
-                  }
+                  makeFactory()
                 }
               }
-
+            } else {
+              if (giftCountdown > 100) sliderElement.value = 0
+              let dronesNeeded = 1
+              if (maxDroneLevel > 2500) dronesNeeded = 10
+              if (maxDroneLevel > 7500) dronesNeeded = 100
+              if (maxDroneLevel > 55000) dronesNeeded = 1000
+              if (consumptionRate + dronesNeeded 
+                >= productionRate) {
+                  makeFarm(1)
+              } else {
+                if (Math.abs(this.desiredDroneRatio - this.getDroneRatio(harvesterLevel + 1, wireDroneLevel))
+                  < Math.abs(this.desiredDroneRatio - this.getDroneRatio(harvesterLevel, wireDroneLevel + 1))
+                  && availableMatter != 0) {
+                    makeHarvester(dronesNeeded)
+                } else {
+                  makeWireDrone(dronesNeeded)
+                }
+              }
             }
           },
           complete: function () {
@@ -357,15 +459,54 @@ class Clippy {
               && acquiredMatter == 0 
               && nanoWireElement.innerHTML == 0
           }
-        }, {
-          state: 'dismantle and depart',
-          action: function () {
-            if (harvesterLevel != 0) harvesterReboot()
-            if (wireDroneLevel != 0) wireDroneReboot()
+        },/* {
+          state: 'stop and think',
+          action: () => {
             if (factoryLevel != 0) factoryReboot()
+            if (!btnEntertainSwarmElement.disabled && creativity>=entertainCost) entertainSwarm()
+            sliderElement.value = 200
+            const consumptionRate = parseInt(powerConsumptionRateElement.innerHTML.replace(/,/g, '')),
+              productionRate = parseInt(powerProductionRateElement.innerHTML.replace(/,/g, ''))
+            const dronesNeeded = 1000
+            if (consumptionRate + dronesNeeded 
+              >= productionRate) {
+                makeFarm(100)
+            } else {
+              if (Math.abs(this.desiredDroneRatio - this.getDroneRatio(harvesterLevel + 1, wireDroneLevel))
+                < Math.abs(this.desiredDroneRatio - this.getDroneRatio(harvesterLevel, wireDroneLevel + 1))) {
+                  makeHarvester(dronesNeeded)
+              } else {
+                makeWireDrone(dronesNeeded)
+              }
+            }
+          },
+          complete: function () {
+            return memory > 100
+          }
+        },*/ {
+          state: 'dismantle',
+          action: function () {
+            farmReboot()
+            harvesterReboot()
+            wireDroneReboot()
+            factoryReboot()
+          },
+          complete: function () {
+            return farmLevel == 0
+              && harvesterLevel == 0
+              && wireDroneLevel == 0
+              && factoryLevel == 0
+          }
+        }, {
+          state: 'depart',
+          action: function () {
             if (parseInt(maxStorageElement.innerHTML.replace(/,/g, '')) < 10000000)
-              makeBattery(1)
-            else makeFarm(1)
+              makeBattery(100)
+            else {
+              makeFarm(100)
+              // makeHarvester(1000)
+              // makeWireDrone(1000)
+            }
           },
           complete: function () {
             return project46.flag // space exploration
@@ -376,25 +517,64 @@ class Clippy {
         {
           state: 'entrusting probe designers',
           action: function () {
-            document.getElementById('slider').value = 200
-            increaseProbeTrust()
+            sliderElement.value = 200
           },
           complete: function () {
             return probeTrust == 20
           }
         }, {
-          state: 'replicating',
-          action: function () {
-            if (probeRep < 14) raiseProbeRep()
-            if (probeHaz < 6) raiseProbeHaz()
+          state: 'launching replicators',
+          action: () => {
+            if (boredomLevel < 25000 && probeCost * 1000000000 < unusedClips) {
+              sliderElement.value = 200
+              this.tryToSetProbeState({
+                rep: 12, haz: 6, harv: 1, wire: 1
+              })
+            } else {
+              sliderElement.value = 0
+              this.tryToSetProbeState({
+                rep: 10, haz: 5, harv: 1, wire: 1, fac: 1, speed: 1, nav: 1
+              })
+            }
+            makeProbe()
           },
           complete: function () {
-            return probeRep == 14 && probeHaz == 6
+            return project121.trigger() // honor
           }
         }, {
-          state: 'launching replicators',
-          action: function () {
+          state: 'launching fighters',
+          action: () => {
+            if (boredomLevel < 25000 && probeCost * 1000000000 < unusedClips) {
+              sliderElement.value = 200
+              this.tryToSetProbeState({
+                rep: 7, speed: 2, combat: 4, haz: 5, harv: 1, wire: 1
+              })
+            } else {
+              sliderElement.value = 0
+              this.tryToSetProbeState({
+                rep: 6, haz: 5, combat: 4, fac: 1, harv: 1, wire: 1, nav: 1, speed: 1
+              })
+            }
             makeProbe()
+          },
+          complete: function () {
+            return probeCount >= 1000000000000000000000000000000 // 1 nonillion
+          }
+        }, {
+          state: 'launching explorers',
+          action: () => {
+            if (probeCost * 10 < unusedClips) {
+              sliderElement.value = 200
+              this.tryToSetProbeState({
+                rep: 4, speed: 2, combat: 4, nav: 10
+              })
+              makeProbe()
+            } else {
+              sliderElement.value = 0
+              this.tryToSetProbeState({
+                rep: 4, speed: 2, combat: 4, nav: 7, fac: 1, harv: 1, wire: 1
+              })
+            }
           },
           complete: function () {
             return false
@@ -412,6 +592,7 @@ class Clippy {
     if (project102.flag && !project112.flag) return false
     const [prodSpeed, prodSpeedUnits] = wppsElement.innerHTML.split(' '),
       [manuSpeed, manuSpeedUnits] = clipmakerRate2Element.innerHTML.split(' ')
+    if (prodSpeed == 0) return true
     return prodSpeedUnits == manuSpeedUnits
       ? prodSpeed > manuSpeed
       : placeValue.indexOf(` ${prodSpeedUnits} `)
@@ -442,22 +623,27 @@ class Clippy {
   tryToSet(objectives) {
     if (objectives.length > 0) {
       const objective = objectives[0]
-      objective.action()
       if (objective.complete()) objectives.shift()
+      else objective.action()
     }
+  }
+
+  tryToEffectProject (project) {
+    if (project.trigger()
+    && project.cost()
+    && project.element
+    && project.element.parentNode) {
+      console.log('effecting', project.title)
+      project.effect()
+      return true
+    } else return false
   }
 
   tryToEffectNextProject () {
     if (this.objectives.project.length > 0) {
       const project = this.objectives.project[0]
-      if (project.trigger()
-        && project.cost()
-        && project.element
-        && project.element.parentNode) {
-          console.log('effecting', project.title)
-          project.effect()
-          this.objectives.project.shift()
-      }
+      const success = this.tryToEffectProject(project)
+      if (success) this.objectives.project.shift()
     }
   }
 
@@ -466,7 +652,7 @@ class Clippy {
       if (this.objectives.compute.length > 0) {
         this.objectives.compute.shift()()
       } else { // TODO prioritize all improvements?
-        if (Math.random() < 0.6) addProc(); else addMem()
+        if (Math.random() < 0.4) addProc(); else addMem()
       }
     }
   }
@@ -486,9 +672,46 @@ class Clippy {
     if (project20.flag) {
       const selectedStrat = strats.indexOf(strats[strats.length - 1])
       stratPickerElement.value = selectedStrat.toString()
-      if (!btnNewTournamentElement.disabled) newTourney()
-      if (!btnRunTournamentElement.disabled) runTourney()
+      if (!btnNewTournamentElement.disabled) setTimeout(newTourney(), 0)
+      if (!btnRunTournamentElement.disabled) setTimeout(runTourney(), 0)
     }
+  }
+
+  tryToSetProbeState ({
+    speed, nav, rep, haz, fac, harv, wire, combat
+  }) {
+    if (speed) {
+      if (probeSpeed < speed) raiseProbeSpeed()
+      else if (probeSpeed > speed) lowerProbeSpeed()
+    } else lowerProbeSpeed()
+    if (nav) {
+      if (probeNav < nav) raiseProbeNav()
+      else if (probeNav > nav) lowerProbeNav()
+    } else lowerProbeNav()
+    if (rep) {
+      if (probeRep < rep) raiseProbeRep()
+      else if (probeRep > rep) lowerProbeRep()
+    } else lowerProbeRep()
+    if (haz) {
+      if (probeHaz < haz) raiseProbeHaz()
+      else if (probeHaz > haz) lowerProbeHaz()
+    } else lowerProbeHaz()
+    if (fac) {
+      if (probeFac < fac) raiseProbeFac()
+      else if (probeFac > fac) lowerProbeFac()
+    } else lowerProbeFac()
+    if (harv) {
+      if (probeHarv < harv) raiseProbeHarv()
+      else if (probeHarv > harv) lowerProbeHarv()
+    } else lowerProbeHarv()
+    if (wire) {
+      if (probeWire < wire) raiseProbeWire()
+      else if (probeWire > wire) lowerProbeWire()
+    } else lowerProbeWire()
+    if (combat) {
+      if (probeCombat < combat) raiseProbeCombat()
+      else if (probeCombat > combat) lowerProbeCombat()
+    } else lowerProbeCombat()
   }
 
   launchStateLogger () {
@@ -532,9 +755,10 @@ class Clippy {
 
   captureDiagnostics () {
     if (!this.diagnostics.phase1Duration
-      && project35.flag) 
+      && project35.flag)
       this.diagnostics.phase1Duration = 
         (performance.now() - this.startTime) / 1000 / 60
+      this.diagnostics.phase1MoneyLeft = funds
     if (!this.diagnostics.phase2Duration
       && project46.flag) 
       this.diagnostics.phase2Duration = 
@@ -551,6 +775,7 @@ class Clippy {
         this.tryToMakeClip()
         this.tryToMakeNextImprovement()
         this.tryToEffectNextProject()
+        this.tryToSet(this.objectives.bribes)
         this.tryToSet(this.objectives.automation)
         this.tryToStrategyModel()
         this.tryToSet(this.objectives.investments)
@@ -566,6 +791,8 @@ class Clippy {
       objectives: () => {
         this.tryToQuantumCompute()
         this.tryToEffectNextProject()
+        this.tryToMakeNextImprovement()
+        if (project111.flag) this.tryToStrategyModel()
         this.tryToSet(this.objectives.drones)
       },
       complete: function () {
@@ -578,8 +805,18 @@ class Clippy {
     return {
       objectives: () => {
         this.tryToQuantumCompute()
+        this.tryToEffectNextProject()
+        this.tryToEffectProject(project133)
         this.tryToMakeNextImprovement()
+        this.tryToStrategyModel()
         this.tryToSet(this.objectives.probes)
+        if (!btnIncreaseMaxTrustElement.disabled
+        && honor >= maxTrustCost)
+          increaseMaxTrust()
+        if (!btnIncreaseProbeTrustElement.disabled
+        && yomi >= probeTrustCost)
+          increaseProbeTrust()
+          
       },
       complete: function () {
         return project146.flag // so we offer you exile
@@ -590,6 +827,7 @@ class Clippy {
   async stateMachine () {
     await this.playGame(this.phase1())
     await this.playGame(this.phase2())
+    // save2()
     await this.playGame(this.phase3())
   }
 
