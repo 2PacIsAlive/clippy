@@ -18,17 +18,3 @@ Clippy definitely clicks faster than you do! It performs multiple
 actions on each execution of the browser's javascript event loop.
 On my laptop, that shakes out to around 12000 to 120000 actions per minute.
 
-## Strategy
-
-### Phase 1
-
-### Phase 2
-
-#### Bootstrapping from low clip count
-If Clippy gets lucky and absolutely dominates the stock market in the
-previous phase, it is able enter the second phase with the minimum number
-of clips required to get off the ground. 
-
-#### Swarm Computing
-
-### Phase 3
