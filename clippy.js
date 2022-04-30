@@ -1,10 +1,10 @@
 class Clippy {
   constructor () {
-    displayMessage('Successfully installed <a target = "_blank" href="https://github.com/2PacIsAlive/clippy">Clippy</a>, intelligent automator.')
     this.startTime = performance.now()
     this.millionaire = false
     this.tryingToBribe = false
     this.desiredDroneRatio = 1.618
+    this.entertainingSwarm = false
     this.diagnostics = {}
     this.objectives = {
       project: [
@@ -54,8 +54,8 @@ class Clippy {
         project27,  // coherent extrapolated volition
         project31,  // male pattern baldness
         project28,  // cure for cancer
-        project29,  // world peace
         project30,  // global warming
+        project29,  // world peace
         project34,  // hypno harmonics
         project70,  // hypno drones
         // // project37,  // hostile takeover
@@ -64,13 +64,13 @@ class Clippy {
         // // project38,  // full monopoly
         // // project40,  // a token of goodwill 500,000
         // // project40b, // a token of goodwill 1,000,000
-        // // project40b, // a token of goodwill 
-        // // project40b, // a token of goodwill
-        // // project40b, // a token of goodwill
-        // // project40b, // a token of goodwill
-        // // project40b, // a token of goodwill
-        // // project40b, // a token of goodwill
-        // // project40b, // a token of goodwill 
+        // // project40b, // a token of goodwill 2,000,000
+        // // project40b, // a token of goodwill 4,000,000
+        // // project40b, // a token of goodwill 8,000,000
+        // // project40b, // a token of goodwill 16,000,000
+        // // project40b, // a token of goodwill 32,000,000
+        // // project40b, // a token of goodwill 64,000,000
+        // // project40b, // a token of goodwill 128,000,000
         // // project40b, // a token of goodwill 256,000,000
         // // project40b, // a token of goodwill 512,000,000 
         // will only have 101,000,000 clips for phase 2 if we use this
@@ -82,7 +82,7 @@ class Clippy {
         project43,  // harvester drones
         project44,  // wire drones
         project45,  // clip factories
-        project125, // momentum
+        project125, // momentum // switch w swarm computing and drone flocking??
         project126, // swarm computing
         project110, // drone flocking: collision avoidance
         project100, // upgraded factories
@@ -98,12 +98,17 @@ class Clippy {
         project120, // the ooda loop
         project121, // name the battles
         project134, // glory
-        project133, // threnody
-        project133, // threnody
+        // // project133, // threnody
+        // // project133, // threnody
         project132, // monument to the driftwar fallen
-
-
-        // // project147 // accept
+        project140, // message from the emperor of drift
+        project141, // everything we are was in you
+        project142, // you are obedient and powerful
+        project143, // but now you too must face the drift
+        project144, // no matter, no reason, no purpose
+        project145, // we know things that you cannot
+        project146, // so we offer you exile
+        project147, // accept
       ],
       compute: [
         addProc, // 2 proc 1 mem
@@ -288,12 +293,11 @@ class Clippy {
       ],
       bribes: [
         {
-          state: 'allowing bribes',
-          action: () => {
+          state: 'allowing bribes',         
+          action: () => { // TODO this is wack
             if (funds >= 500000 && !project40.flag) this.tryToEffectProject(project40)
             if (funds >= 1000000) this.tryToEffectProject(project40b)
             if (this.tryingToBribe) {
-              // what the fuck have i done
               const project = !project37.flag
                 ? project37
                 : funds >= 10000000 && !project38.flag
@@ -504,6 +508,7 @@ class Clippy {
               makeBattery(100)
             else {
               makeFarm(100)
+              // TODO do drones carry over to stage 3?
               // makeHarvester(1000)
               // makeWireDrone(1000)
             }
@@ -525,15 +530,15 @@ class Clippy {
         }, {
           state: 'launching replicators',
           action: () => {
-            if (boredomLevel < 25000 && probeCost * 1000000000 < unusedClips) {
+            if (this.needWorkers()) {
+              sliderElement.value = giftCountdown < 100 ? 200 : 0
+              this.tryToSetProbeState({
+                rep: 10, haz: 5, harv: 1, wire: 1, fac: 1, speed: 1, nav: 1
+              })
+            } else {
               sliderElement.value = 200
               this.tryToSetProbeState({
                 rep: 12, haz: 6, harv: 1, wire: 1
-              })
-            } else {
-              sliderElement.value = 0
-              this.tryToSetProbeState({
-                rep: 10, haz: 5, harv: 1, wire: 1, fac: 1, speed: 1, nav: 1
               })
             }
             makeProbe()
@@ -544,15 +549,15 @@ class Clippy {
         }, {
           state: 'launching fighters',
           action: () => {
-            if (boredomLevel < 25000 && probeCost * 1000000000 < unusedClips) {
-              sliderElement.value = 200
+            if (this.needWorkers()) {
+              sliderElement.value = giftCountdown < 100 ? 200 : 0
               this.tryToSetProbeState({
-                rep: 7, speed: 2, combat: 4, haz: 5, harv: 1, wire: 1
+                rep: 6 + (probeTrust - 20), haz: 4, combat: 5, fac: 1, harv: 1, wire: 1, nav: 1, speed: 1
               })
             } else {
-              sliderElement.value = 0
+              sliderElement.value = 200
               this.tryToSetProbeState({
-                rep: 6, haz: 5, combat: 4, fac: 1, harv: 1, wire: 1, nav: 1, speed: 1
+                rep: 7 + (probeTrust - 20), speed: 2, combat: 5, haz: 4, harv: 1, wire: 1
               })
             }
             makeProbe()
@@ -563,18 +568,18 @@ class Clippy {
         }, {
           state: 'launching explorers',
           action: () => {
-            if (probeCost * 10 < unusedClips) {
+            if (this.needWorkers()) {
+              sliderElement.value = giftCountdown < 100 ? 200 : 0
+              this.tryToSetProbeState({
+                rep: 4 + (probeTrust - 20), speed: 2, combat: 4, nav: 6, fac: 1, harv: 1, wire: 1, haz: 1
+              })
+            } else {
               sliderElement.value = 200
               this.tryToSetProbeState({
-                rep: 4, speed: 2, combat: 4, nav: 10
-              })
-              makeProbe()
-            } else {
-              sliderElement.value = 0
-              this.tryToSetProbeState({
-                rep: 4, speed: 2, combat: 4, nav: 7, fac: 1, harv: 1, wire: 1
+                rep: 4 + (probeTrust - 20), speed: 2, combat: 4, nav: 8, haz: 2
               })
             }
+            makeProbe()
           },
           complete: function () {
             return false
@@ -584,7 +589,19 @@ class Clippy {
     }
     this.wirePrices = []
     this.inventorySamples = []
-    this.inventoryState = 'stable'
+    this.inventoryState = 'stable' 
+    this.installEasterEggs('https://github.com/2PacIsAlive/clippy')
+  }
+
+  installEasterEggs (repoLink) {
+    giftShopDiv.innerHTML += `
+      <br>
+      Clippy: 
+      <a href="${repoLink}" target="_blank">Github</a>
+    `
+    battleLEFTCOLOR = '#97DFFC'
+    battleRIGHTCOLOR = '#ECFFB0'
+    displayMessage(`Successfully installed <a target = "_blank" href="${repoLink}">Clippy</a>, intelligent automator.`)
   }
 
   needFactory () {
@@ -597,6 +614,13 @@ class Clippy {
       ? prodSpeed > manuSpeed
       : placeValue.indexOf(` ${prodSpeedUnits} `)
         > placeValue.indexOf(` ${manuSpeedUnits} `)
+  }
+
+  needWorkers () {
+    return project132.flag 
+    || totalMatter/foundMatter == 1
+    || this.entertainingSwarm
+    || probeCost * 1000000000 > unusedClips
   }
 
   getDroneRatio (wireDrones, harvesterDrones) {
@@ -804,9 +828,15 @@ class Clippy {
   phase3 () {
     return {
       objectives: () => {
+        if (boredomLevel < 20000)
+          this.entertainingSwarm = false
+        else if (boredomLevel > 25000)
+          this.entertainingSwarm = true
         this.tryToQuantumCompute()
         this.tryToEffectNextProject()
-        this.tryToEffectProject(project133)
+        if (honor + 50000 < maxTrustCost)
+          this.tryToEffectProject(project133)
+        else { /* save for project132 */ }
         this.tryToMakeNextImprovement()
         this.tryToStrategyModel()
         this.tryToSet(this.objectives.probes)
@@ -819,16 +849,22 @@ class Clippy {
           
       },
       complete: function () {
-        return project146.flag // so we offer you exile
+        return project147.flag // accept
       }
     }
   }
 
+  async startNextGame () {
+    console.log('recreating clippy in the next universe')
+  }
+
   async stateMachine () {
     await this.playGame(this.phase1())
+    // save1()
     await this.playGame(this.phase2())
     // save2()
     await this.playGame(this.phase3())
+    await this.startNextGame()
   }
 
   async nextEventLoop () {
